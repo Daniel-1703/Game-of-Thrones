@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
+import gotService from '../../services/gotService';
+import Spinner from '../spinner/spinner';
+import ErrorMessage from '../errorMessage/errorMessage';
 
 const CharacterRand = styled.div`
     background-color: #fff;
@@ -22,30 +25,79 @@ const Detail = styled.li`
    
 export default class RandomChar extends Component {
 
+    constructor() {
+        super();
+        this.updateChar();
+    }
+
+    gotService = new gotService();
+    state = {
+        char: {},
+        loading: true,
+        error: false
+    }
+
+    onCharLoaded = (char) => {
+        this.setState({
+            char,
+            loading: false,
+        })
+    }
+    
+    onError = (err) => {
+        this.setState({
+            error: true,
+            loading: false
+        })
+    }
+
+    updateChar() {
+        const id = Math.floor(Math.random()*200 + 50);
+        this.gotService.getCharacter(id)
+            .then(this.onCharLoaded)
+            .catch(this.onError);
+    }
+
     render() {
+        const {char, loading, error} = this.state;
+
+        const errorMessage = error ? <ErrorMessage/> : null;
+        const spinner = loading ? <Spinner/> : null;
+        const content = !(loading || error) ? <View char={char}/> : null;
 
         return (
             <CharacterRand className="rounded">
-                <h4>Random Character: John</h4>
-                <ul className="list-group list-group-flush">
-                    <Detail className="list-group-item">
-                        <span>Gender </span>
-                        <span>male</span>
-                    </Detail>
-                    <Detail className="list-group-item">
-                        <span>Born </span>
-                        <span>11.03.1039</span>
-                    </Detail>
-                    <Detail className="list-group-item">
-                        <span>Died </span>
-                        <span>13.09.1089</span>
-                    </Detail>
-                    <Detail className="list-group-item">
-                        <span>Culture </span>
-                        <span>Anarchy</span>
-                    </Detail>
-                </ul>
+                {errorMessage}
+                {spinner}
+                {content}
             </CharacterRand>
         );
     }
+}
+
+const View = ({char}) => {
+    const {name, gender, born, died, culture} = char;
+    return (
+        <>
+            <h4>Random Character: {name}</h4>
+            <ul className="list-group list-group-flush">
+                <Detail className="list-group-item">
+                    <span>Gender </span>
+                    <span>{gender}</span>
+                </Detail>
+                <Detail className="list-group-item">
+                    <span>Born </span>
+                    <span>{born}</span>
+                </Detail>
+                <Detail className="list-group-item">
+                    <span>Died </span>
+                    <span>{died}</span>
+                </Detail>
+                <Detail className="list-group-item">
+                    <span>Culture </span>
+                    <span>{culture}</span>
+                </Detail>
+            </ul>
+        </>
+    )
 }
