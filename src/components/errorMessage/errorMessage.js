@@ -1,9 +1,18 @@
 import React from 'react';
-// import img from './error.jpg';
+import styled from 'styled-components';
+import img from './error.jpg';
+
+const Error = styled.img`
+    height: 223px;
+`
 
 const ErrorMessage = () => {
-    // <img src={img} alt='error'></img>
-    return <span>Something goes wrong</span>
+    return (
+        <>
+            <Error src={img} alt='error'></Error>
+            <span>Something goes wrong</span>
+        </>
+    )
 }
 
 export default ErrorMessage;

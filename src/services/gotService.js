@@ -36,13 +36,21 @@ export default class GotService {
         return this.getResource(`/books/${id}/`);
     }
 
+    addData(data) {
+        if (data) {
+            return data;
+        } else {
+            return "no data :((";
+        }
+    }
+
     _transformCharacter(char) {
         return {
-            name: char.name,
-            gender: char.gender,
-            born: char.born,
-            died: char.died,
-            culture: char.culture
+            name: this.addData(char.name),
+            gender: this.addData(char.gender),
+            born: this.addData(char.born),
+            died: this.addData(char.died),
+            culture: this.addData(char.culture)
         }
     }
 
