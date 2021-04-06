@@ -3,9 +3,8 @@ import {Col, Row, Container} from 'reactstrap';
 import styled from 'styled-components';
 import Header from '../header/header';
 import RandomChar from '../randomChar/randomChar';
-import ItemList from '../itemList/itemList';
-import CharDetails from '../charDetails/charDetails';
 import ErrorMessage from '../errorMessage/errorMessage';
+import CharacterPage from '../characterPage/characterPage';
 
 const Btn = styled.button`
     padding: 12px;
@@ -26,6 +25,13 @@ export default class App extends Component {
     state = {
         toggleRandomChar: true,
         error: false
+    };
+
+    componentDidCatch() {
+        console.log('error');
+        this.setState({
+            error: true
+        })
     }
 
     toggleRandomChar = () => {
@@ -34,7 +40,7 @@ export default class App extends Component {
                 toggleRandomChar: !state.toggleRandomChar
             }
         });
-    }
+    };
 
     render() {
         if (this.state.error) {
@@ -58,14 +64,7 @@ export default class App extends Component {
                             </Btn>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList />
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails />
-                        </Col>
-                    </Row>
+                    <CharacterPage/>
                 </Container>
             </>
         );
