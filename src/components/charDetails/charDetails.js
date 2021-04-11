@@ -27,6 +27,19 @@ const Error = styled.span`
     font-size: 23px;
 `
 
+const Field = ({char, field, label}) => {
+    return (
+        <Detail className="list-group-item">
+            <span>{label}</span>
+            <span>{char[field]}</span>
+        </Detail>
+    )
+}
+
+export {
+    Field
+}
+
 export default class CharDetails extends Component {
 
     gotService = new gotService();
@@ -82,8 +95,8 @@ export default class CharDetails extends Component {
         } else if (!this.state.char) {
             return <Error>Please select a character</Error>
         }
-
-        const {name, gender, born, died, culture} = this.state.char;
+        const {char} = this.state;
+        const {name} = char;
 
         if (this.state.loading) {
             return (
@@ -97,22 +110,11 @@ export default class CharDetails extends Component {
             <CharacterDet className="rounded">
                 <h4>{name}</h4>
                 <ul className="list-group list-group-flush">
-                    <Detail className="list-group-item">
-                        <span>Gender</span>
-                        <span>{gender}</span>
-                    </Detail>
-                    <Detail className="list-group-item">
-                        <span>Born</span>
-                        <span>{born}</span>
-                    </Detail>
-                    <Detail className="list-group-item">
-                        <span>Died</span>
-                        <span>{died}</span>
-                    </Detail>
-                    <Detail className="list-group-item">
-                        <span>Culture</span>
-                        <span>{culture}</span>
-                    </Detail>
+                    {
+                        React.Children.map(this.props.children, (child) => {
+                            return React.cloneElement(child, {char})
+                        })
+                    }
                 </ul>
             </CharacterDet>
         );

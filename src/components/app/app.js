@@ -5,6 +5,9 @@ import Header from '../header/header';
 import RandomChar from '../randomChar/randomChar';
 import ErrorMessage from '../errorMessage/errorMessage';
 import CharacterPage from '../characterPage/characterPage';
+import ItemList from '../itemList/itemList';
+import CharDetails from '../charDetails/charDetails';
+import gotService from '../../services/gotService';
 
 const Btn = styled.button`
     padding: 12px;
@@ -22,6 +25,8 @@ const Btn = styled.button`
 `
 
 export default class App extends Component {
+    gotService = new gotService();
+
     state = {
         toggleRandomChar: true,
         error: false
@@ -65,6 +70,28 @@ export default class App extends Component {
                         </Col>
                     </Row>
                     <CharacterPage/>
+                    <Row>
+                        <Col md='6'>
+                            <ItemList 
+                            onItemSelected={this.onItemSelected}
+                            getData={this.gotService.getAllBooks}
+                            renderItem={(item) => item.name}/>
+                        </Col>
+                        <Col md='6'>
+                            <CharDetails charId={this.state.selectedChar}/>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col md='6'>
+                            <ItemList 
+                            onItemSelected={this.onItemSelected}
+                            getData={this.gotService.getAllHouses}
+                            renderItem={(item) => item.name}/>
+                        </Col>
+                        <Col md='6'>
+                            <CharDetails charId={this.state.selectedChar}/>
+                        </Col>
+                    </Row>
                 </Container>
             </>
         );
