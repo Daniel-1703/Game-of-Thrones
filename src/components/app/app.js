@@ -4,9 +4,9 @@ import styled from 'styled-components';
 import Header from '../header/header';
 import RandomChar from '../randomChar/randomChar';
 import ErrorMessage from '../errorMessage/errorMessage';
-import CharacterPage from '../characterPage/characterPage';
-import ItemList from '../itemList/itemList';
-import CharDetails from '../charDetails/charDetails';
+import CharacterPage from '../pages/characterPage';
+import HousesPage from '../pages/housesPage';
+import BooksPage from '../pages/booksPage';
 import gotService from '../../services/gotService';
 
 const Btn = styled.button`
@@ -70,28 +70,8 @@ export default class App extends Component {
                         </Col>
                     </Row>
                     <CharacterPage/>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList 
-                            onItemSelected={this.onItemSelected}
-                            getData={this.gotService.getAllBooks}
-                            renderItem={(item) => item.name}/>
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails charId={this.state.selectedChar}/>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList 
-                            onItemSelected={this.onItemSelected}
-                            getData={this.gotService.getAllHouses}
-                            renderItem={(item) => item.name}/>
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails charId={this.state.selectedChar}/>
-                        </Col>
-                    </Row>
+                    <HousesPage/>
+                    <BooksPage/>
                 </Container>
             </>
         );

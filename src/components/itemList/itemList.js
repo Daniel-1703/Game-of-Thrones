@@ -10,7 +10,7 @@ const List = styled.li`
 export default class ItemList extends Component {
 
     state = {
-        charList: null,
+        itemList: null,
         error: false
     }
 

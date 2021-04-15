@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import gotService from '../../services/gotService';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
 
@@ -27,83 +26,76 @@ const Error = styled.span`
     font-size: 23px;
 `
 
-const Field = ({char, field, label}) => {
+const Field = ({item, field, label}) => {
     return (
         <Detail className="list-group-item">
             <span>{label}</span>
-            <span>{char[field]}</span>
+            <span>{item[field]}</span>
         </Detail>
     )
 }
 
 export {
     Field
-}
+};
 
-export default class CharDetails extends Component {
-
-    gotService = new gotService();
+export default class ItemDetails extends Component {
 
     state = {
-        char: null,
+        item: null,
         loading: true,
         error: false
     }
 
     componentDidMount () {
-        this.updateChar();
+        this.updateItem();
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.charId !== prevProps.charId) {
-            this.updateChar();
+        if (this.props.itemId !== prevProps.itemId) {
+            this.updateItem();
         }
     }
 
-    onCharDetLoaded = (char) => {
-        this.setState({
-            char,
-            loading: false
-        })
-    }
-
-    updateChar() {
-        const {charId} = this.props;
-        if(!charId) {
+    updateItem() {
+        const {itemId, getData} = this.props;
+        if(!itemId) {
             return;
-        } 
+        }
 
         this.setState({
             loading: true
         })
 
-        this.gotService.getCharacter(charId)
-            .then(this.onCharDetLoaded)
+        getData(itemId)
+            .then((item) => {
+                this.setState({item})
+            })
             .catch(() => this.onError())
-    }
+    } 
+
 
     onError() {
         this.setState({
-            char: null,
+            item: null,
+            loading: false,
             error: true
         })
     }
 
     render() {
-        if (!this.state.char && this.state.error) {
+        if (!this.state.item && this.state.error) {
             return <ErrorMessage/>
-        } else if (!this.state.char) {
+        } else if (!this.state.item) {
             return <Error>Please select a character</Error>
         }
-        const {char} = this.state;
-        const {name} = char;
-
-        if (this.state.loading) {
-            return (
-                <CharacterDet className="rounded">
-                    <Spinner/>
-                </CharacterDet>
-            )
+        const {item, loading, error} = this.state;
+        const {name} = item;
+        
+        if (loading) {
+            <CharacterDet className="rounded">
+                <Spinner/>
+            </CharacterDet>
         }
 
         return (
@@ -112,11 +104,12 @@ export default class CharDetails extends Component {
                 <ul className="list-group list-group-flush">
                     {
                         React.Children.map(this.props.children, (child) => {
-                            return React.cloneElement(child, {char})
+                            return React.cloneElement(child, {item})
                         })
                     }
                 </ul>
             </CharacterDet>
         );
+        
     }
 }
