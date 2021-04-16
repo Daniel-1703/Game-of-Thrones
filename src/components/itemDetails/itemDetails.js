@@ -87,7 +87,7 @@ export default class ItemDetails extends Component {
         if (!this.state.item && this.state.error) {
             return <ErrorMessage/>
         } else if (!this.state.item) {
-            return <Error>Please select a character</Error>
+            return <Error>Please select item in the list</Error>
         }
         const {item, loading, error} = this.state;
         const {name} = item;
