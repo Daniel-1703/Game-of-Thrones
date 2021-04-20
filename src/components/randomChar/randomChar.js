@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import gotService from '../../services/gotService';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/errorMessage';
+import PropTypes from 'prop-types';
 
 const CharacterRand = styled.div`
     background-color: #fff;
@@ -36,7 +37,7 @@ export default class RandomChar extends Component {
 
     componentDidMount() {
         this.updateChar();
-        this.timerId = setInterval(this.updateChar, 1500);
+        this.timerId = setInterval(this.updateChar, this.props.interval);
     }
 
     componentWillUnmount() {
@@ -65,8 +66,6 @@ export default class RandomChar extends Component {
     }
 
     render() {
-        console.log('render');
-
         const {char, loading, error} = this.state;
 
         const errorMessage = error ? <ErrorMessage/> : null;
@@ -81,6 +80,14 @@ export default class RandomChar extends Component {
             </CharacterRand>
         );
     }
+}
+
+RandomChar.defaultProps = {
+    interval: 7000
+}
+
+RandomChar.propTypes = {
+    interval: PropTypes.number
 }
 
 const View = ({char}) => {

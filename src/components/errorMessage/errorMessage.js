@@ -4,13 +4,17 @@ import img from './error.jpg';
 
 const Error = styled.img`
     height: 223px;
+    margin-left: 43px;
+`
+const Sp = styled.span`
+    margin-left: 155px;
 `
 
 const ErrorMessage = () => {
     return (
         <>
             <Error src={img} alt='error'></Error>
-            <span>Something goes wrong</span>
+            <br/><Sp>Something goes wrong</Sp>
         </>
     )
 }
